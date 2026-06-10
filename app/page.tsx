@@ -28,8 +28,8 @@ export default function Home() {
     if (!roomCode) return;
 
     const hostname = window.location.hostname;
-    // Connect to the standalone socket.io server running on port 3001
-    const socket = io(`http://${hostname}:3001`);
+    const socketUrl = process.env.NEXT_PUBLIC_SOCKET_URL || `http://${hostname}:3001`;
+    const socket = io(socketUrl);
     socketRef.current = socket;
 
     socket.on("connect", () => {
@@ -51,7 +51,10 @@ export default function Home() {
     };
   }, [roomCode]);
 
-  const mobileUrl = localIp ? `http://${localIp}:3000/mobile?room=${roomCode}` : "";
+  const baseUrl = typeof window !== 'undefined' && window.location.hostname !== 'localhost' 
+    ? window.location.origin 
+    : (localIp ? `http://${localIp}:3000` : "");
+  const mobileUrl = baseUrl ? `${baseUrl}/mobile?room=${roomCode}` : "";
 
   return (
     <div className="flex flex-col min-h-screen items-center justify-center p-6">

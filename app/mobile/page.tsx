@@ -29,7 +29,8 @@ export default function MobileView() {
 
     setStatus("connecting");
     const hostname = window.location.hostname;
-    const socket = io(`http://${hostname}:3001`);
+    const socketUrl = process.env.NEXT_PUBLIC_SOCKET_URL || `http://${hostname}:3001`;
+    const socket = io(socketUrl);
     socketRef.current = socket;
 
     socket.on("connect", () => {
