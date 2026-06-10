@@ -3,6 +3,7 @@
 import { useEffect, useState, useRef } from "react";
 import { io, Socket } from "socket.io-client";
 import { Smartphone, Zap, CheckCircle, ShieldAlert } from "lucide-react";
+import NoSleep from "nosleep.js";
 
 export default function MobileView() {
   const [roomCode, setRoomCode] = useState("");
@@ -10,7 +11,7 @@ export default function MobileView() {
   const [isStreaming, setIsStreaming] = useState(false);
   const [errorMsg, setErrorMsg] = useState("");
   const socketRef = useRef<Socket | null>(null);
-  const wakeLockRef = useRef<any>(null);
+  const noSleepRef = useRef<any>(null);
 
   useEffect(() => {
     // Get room from URL query parameters
@@ -58,14 +59,15 @@ export default function MobileView() {
         }
       }
 
-      // 2. Request Wake Lock to keep screen on
-      if ("wakeLock" in navigator) {
-        try {
-          wakeLockRef.current = await navigator.wakeLock.request("screen");
-          console.log("Screen Wake Lock active");
-        } catch (err: any) {
-          console.error("Wake Lock error:", err);
-        }
+      // 2. Request Wake Lock to keep screen on using NoSleep.js
+      if (!noSleepRef.current) {
+        noSleepRef.current = new NoSleep();
+      }
+      try {
+        await noSleepRef.current.enable();
+        console.log("NoSleep active");
+      } catch (err: any) {
+        console.error("NoSleep error:", err);
       }
 
       // 3. Attach event listeners
@@ -84,9 +86,8 @@ export default function MobileView() {
   const stopSensors = () => {
     window.removeEventListener("deviceorientation", handleOrientation);
     window.removeEventListener("devicemotion", handleMotion);
-    if (wakeLockRef.current) {
-      wakeLockRef.current.release();
-      wakeLockRef.current = null;
+    if (noSleepRef.current) {
+      noSleepRef.current.disable();
     }
     setIsStreaming(false);
   };
