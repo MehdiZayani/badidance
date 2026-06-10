@@ -46,17 +46,8 @@ export default function MobileView() {
 
   const startSensors = async () => {
     try {
-      // 1. Request Wake Lock to keep screen on
-      if ("wakeLock" in navigator) {
-        try {
-          wakeLockRef.current = await navigator.wakeLock.request("screen");
-          console.log("Screen Wake Lock active");
-        } catch (err: any) {
-          console.error("Wake Lock error:", err);
-        }
-      }
-
-      // 2. Request Device Orientation Permission (required for iOS 13+)
+      // 1. Request Device Orientation Permission FIRST (required for iOS 13+)
+      // This MUST be the very first await, otherwise Safari loses the "user gesture" context
       if (
         typeof (DeviceOrientationEvent as any).requestPermission === "function"
       ) {
@@ -64,6 +55,16 @@ export default function MobileView() {
         if (permissionState !== "granted") {
           setErrorMsg("Permission for device sensors was denied.");
           return;
+        }
+      }
+
+      // 2. Request Wake Lock to keep screen on
+      if ("wakeLock" in navigator) {
+        try {
+          wakeLockRef.current = await navigator.wakeLock.request("screen");
+          console.log("Screen Wake Lock active");
+        } catch (err: any) {
+          console.error("Wake Lock error:", err);
         }
       }
 
