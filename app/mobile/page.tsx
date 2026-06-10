@@ -136,7 +136,8 @@ export default function MobileView() {
         <div className="z-10 flex flex-col items-center w-full">
           <Smartphone className={`w-16 h-16 mb-4 ${isStreaming ? 'text-blue-400 animate-pulse' : 'text-slate-400'}`} />
           
-          <h1 className="text-2xl font-bold mb-2 text-center">Mobile Controller</h1>
+          <h1 className="text-2xl font-bold mb-1 text-center bg-gradient-to-r from-pink-400 via-purple-400 to-indigo-400 bg-clip-text text-transparent">Badi Dance</h1>
+          <p className="text-slate-400 text-xs font-semibold uppercase tracking-widest mb-4">Mobile Controller</p>
           
           {status !== "connected" && (
             <div className="w-full space-y-4 mt-6">

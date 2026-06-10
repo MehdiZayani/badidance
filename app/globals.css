@@ -1,7 +1,7 @@
 @import "tailwindcss";
 
 :root {
-  --background: #0f172a; /* Dark slate */
+  --background: #090d16; /* Deeper dark space */
   --foreground: #f8fafc;
 }
 
@@ -16,17 +16,54 @@ body {
   background: var(--background);
   color: var(--foreground);
   background-image: 
-    radial-gradient(at 0% 0%, hsla(253,16%,7%,1) 0, transparent 50%), 
-    radial-gradient(at 50% 0%, hsla(225,39%,30%,0.2) 0, transparent 50%), 
-    radial-gradient(at 100% 0%, hsla(339,49%,30%,0.2) 0, transparent 50%);
+    radial-gradient(at 0% 0%, hsla(253,30%,10%,1) 0, transparent 50%), 
+    radial-gradient(at 50% 0%, hsla(280,50%,25%,0.15) 0, transparent 50%), 
+    radial-gradient(at 100% 0%, hsla(340,60%,20%,0.15) 0, transparent 50%);
   background-attachment: fixed;
   font-family: Arial, Helvetica, sans-serif;
+  overflow-x: hidden;
 }
 
 .glass-panel {
-  background: rgba(255, 255, 255, 0.05);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+  background: rgba(255, 255, 255, 0.03);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
 }
+
+@keyframes rating-pop {
+  0% { transform: scale(0.5); opacity: 0; }
+  15% { transform: scale(1.2); opacity: 1; }
+  30% { transform: scale(1); opacity: 1; }
+  80% { transform: scale(1); opacity: 1; }
+  100% { transform: translateY(-30px) scale(0.9); opacity: 0; }
+}
+
+.animate-rating {
+  animation: rating-pop 1s ease-out forwards;
+}
+
+@keyframes pulse-combo {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.15); }
+}
+
+.animate-combo {
+  animation: pulse-combo 0.3s ease-out;
+}
+
+@keyframes rainbow {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+.animate-rainbow {
+  background: linear-gradient(90deg, #ff007f, #7f00ff, #00ffff, #00ff7f, #ff007f);
+  background-size: 400% 400%;
+  animation: rainbow 6s ease infinite;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
